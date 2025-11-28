@@ -212,34 +212,30 @@ button:hover {
 }  
 .wallet-label {  
   font-weight: 600;  
-  margin-bottom: 3px;  
+  margin-bottom: 4px;  
   color: #23314a;  
 }  
-.wallet-row {  
-  display: flex;  
-  align-items: center;  
-  justify-content: space-between;  
-  gap: 6px;  
-  margin-bottom: 4px;  
-  flex-wrap: nowrap;  
+.wallet-number-title {  
+  font-size: 10px;  
+  color: #555;  
 }  
 .wallet-number {  
   font-family: monospace;  
   font-size: 11px;  
   color: #333;  
-  flex: 1 1 auto;  
-  white-space: normal;  
+  margin-top: 2px;  
   word-break: break-word;  
 }  
 .copy-mini-btn {  
-  padding: 2px 6px;  
-  font-size: 9px;  
+  margin-top: 6px;  
+  padding: 4px 6px;  
+  font-size: 10px;  
   border-radius: 6px;  
   border: 1px solid #4a6fa1;  
   background: #ffffff;  
   cursor: pointer;  
-  flex: 0 0 auto;  
   color: #4a6fa1;  
+  width: 100%;  
 }  
 .copy-mini-btn:hover {  
   background: #e6ebf5;  
@@ -247,7 +243,7 @@ button:hover {
 .wallet-note {  
   font-size: 10px;  
   color: #777;  
-  margin-top: 4px;  
+  margin-top: 6px;  
 }  
 </style>  
 </head>  
@@ -378,9 +374,10 @@ button:hover {
     <div class="wallet-section">
       <div id="walletLabel" class="wallet-label">QRIS (scan QR di atas)</div>
 
-      <div class="wallet-row">
-        <span id="walletNumber" class="wallet-number">Gunakan QR di atas</span>
-        <button id="copyNumberBtn" type="button" class="copy-mini-btn">Salin</button>
+      <div id="walletNumberWrapper">
+        <div id="walletNumberTitle" class="wallet-number-title">No tujuan pembayaran</div>
+        <div id="walletNumber" class="wallet-number">Gunakan QR di atas</div>
+        <button id="copyNumberBtn" type="button" class="copy-mini-btn">Salin nomor</button>
       </div>
 
       <div id="walletNote" class="wallet-note">
@@ -506,7 +503,9 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
   const copySuccess = document.getElementById('copySuccess');  
 
   const walletLabel = document.getElementById('walletLabel');
+  const walletNumberTitle = document.getElementById('walletNumberTitle');
   const walletNumber = document.getElementById('walletNumber');
+  const walletNumberWrapper = document.getElementById('walletNumberWrapper');
   const walletNote = document.getElementById('walletNote');
   const copyNumberBtn = document.getElementById('copyNumberBtn');
 
@@ -528,31 +527,39 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
   const METHOD_CONFIG = {
     qris: {
       label: 'QRIS (scan QR di atas)',
-      number: 'Gunakan QR di atas',
+      numberTitle: '',
+      number: '',
       calcTotal: (base) => {
         if (base <= 499000) return base;
         const fee = Math.round(base * 0.003); // 0.3%
         return base + fee;
       },
-      note: 'QRIS hingga Rp499.000 tidak ada biaya tambahan. Di atas itu akan dikenakan biaya 0,3% dari nominal.'
+      note: 'QRIS hingga Rp499.000 tidak ada biaya tambahan. Di atas itu akan dikenakan biaya 0,3% dari nominal.',
+      showNumber: false
     },
     gopay: {
       label: 'Transfer GoPay',
+      numberTitle: 'No HP GoPay',
       number: GOPAY_NUMBER,
       calcTotal: (base) => base,
-      note: 'Pembayaran GoPay tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.'
+      note: 'Pembayaran GoPay tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.',
+      showNumber: true
     },
     seabank: {
       label: 'Transfer SeaBank',
+      numberTitle: 'No rekening SeaBank',
       number: SEABANK_NUMBER,
       calcTotal: (base) => base,
-      note: 'Pembayaran SeaBank tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.'
+      note: 'SeaBank tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.',
+      showNumber: true
     },
     dana: {
       label: 'Transfer DANA',
+      numberTitle: 'No HP DANA',
       number: DANA_NUMBER,
       calcTotal: (base) => base + 100,
-      note: 'Pembayaran DANA dikenakan biaya admin Rp100. Total sudah termasuk biaya admin.'
+      note: 'Pembayaran DANA dikenakan biaya admin Rp100. Total sudah termasuk biaya admin.',
+      showNumber: true
     }
   };
 
@@ -595,11 +602,7 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     }
   }
 
-  let activeMethod = 'qris';
-
   function applyMethod(methodKey) {
-    activeMethod = methodKey;
-
     methodButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.method === methodKey);
     });
@@ -607,12 +610,21 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     const cfg = METHOD_CONFIG[methodKey];
 
     walletLabel.textContent = cfg.label;
-    walletNumber.textContent = cfg.number;
+    walletNote.textContent = cfg.note;
 
     const total = cfg.calcTotal(baseAmount);
     modalAmount.textContent = formatRupiah(total);
 
-    walletNote.textContent = cfg.note;
+    if (cfg.showNumber) {
+      walletNumberTitle.textContent = cfg.numberTitle;
+      walletNumber.textContent = cfg.number;
+      walletNumberWrapper.style.display = 'block';
+      copyNumberBtn.style.display = 'block';
+    } else {
+      // QRIS: tidak perlu nomor + tombol salin
+      walletNumberWrapper.style.display = 'none';
+      copyNumberBtn.style.display = 'none';
+    }
 
     if (methodKey === 'qris') {
       modalQr.style.display = 'block';
@@ -647,7 +659,7 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     }  
   };  
 
-  // SALIN NOMOR (tanpa popup alert, pakai teks hijau)
+  // SALIN NOMOR (hanya untuk GoPay / SeaBank / DANA)
   copyNumberBtn.onclick = function () {
     copyTextToClipboard(walletNumber.textContent || '', 'Nomor berhasil disalin');
   };
