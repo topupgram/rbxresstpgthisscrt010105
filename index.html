@@ -179,6 +179,7 @@ button:hover {
   font-size: 12px;  
   color: green;  
   margin-top: 6px;  
+  display:none;  
 }  
 
 /* Metode pembayaran & nomor e-wallet */  
@@ -224,10 +225,11 @@ button:hover {
 }  
 .wallet-number {  
   font-family: monospace;  
-  font-size: 10px;  
+  font-size: 11px;  
   color: #333;  
   flex: 1 1 auto;  
-  word-break: break-all;  
+  white-space: normal;  
+  word-break: break-word;  
 }  
 .copy-mini-btn {  
   padding: 2px 6px;  
@@ -403,7 +405,7 @@ button:hover {
       <button id="closeModalBtn" type="button" style="width:100%; background:#e0e0e0; color:#222;">Tutup</button>  
     </div>  
 
-    <div id="copySuccess" class="copy-success" style="display:none;">Jumlah berhasil disalin ke clipboard</div>  
+    <div id="copySuccess" class="copy-success"></div>  
   </div>  
 </div>  
   
@@ -461,7 +463,6 @@ document.getElementById("btnWa").addEventListener("click", function() {
   let nominal = document.getElementById("nominal").value;  
   let harga = document.getElementById("harga").value;  
   
-  // token/chat_id placeholder (ganti sesuai kebutuhan)  
   const botToken = "8039852277:AAEqbfQUF37cjDlEposj2rzHm28_Pxzv-mw";  
   const chatId = "-1003049680083";  
   
@@ -484,7 +485,6 @@ document.getElementById("btnWa").addEventListener("click", function() {
   })  
   .then(res => {  
     if (res.ok) {  
-      // Tampilkan payment popup (modal)  
       const qrUrl = "https://payment.uwu.ai/assets/images/gallery03/8555ed8a_original.jpg?v=58e63277";  
       showPaymentPopup(qrUrl, harga);  
       form.reset();  
@@ -512,12 +512,10 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
 
   const methodButtons = document.querySelectorAll('.method-btn');
 
-  // ========= KONFIGURASI NOMOR & BIAYA =========
   const GOPAY_NUMBER   = '083197962700';
   const DANA_NUMBER    = '083197962700';
   const SEABANK_NUMBER = '901673348752';
 
-  // Ambil angka murni dari harga di form
   const baseAmount = (function () {
     const num = Number(String(hargaFormatted).replace(/[^\d]/g, ''));
     return isNaN(num) ? 0 : num;
@@ -527,7 +525,6 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     return "Rp" + new Intl.NumberFormat('id-ID').format(num);
   }
 
-  // Hitung total sesuai metode
   const METHOD_CONFIG = {
     qris: {
       label: 'QRIS (scan QR di atas)',
@@ -559,29 +556,64 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     }
   };
 
+  function showMessage(msg) {
+    copySuccess.textContent = msg;
+    copySuccess.style.display = 'block';
+    setTimeout(()=> copySuccess.style.display = 'none', 2500);
+  }
+
+  function copyTextToClipboard(text, successMsg) {
+    if (!text) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        showMessage(successMsg);
+      }).catch(() => {
+        const tmp = document.createElement('textarea');
+        tmp.value = text;
+        document.body.appendChild(tmp);
+        tmp.select();
+        try {
+          document.execCommand('copy');
+          showMessage(successMsg);
+        } catch(e) {
+          showMessage('Tidak dapat menyalin, silakan salin manual.');
+        }
+        document.body.removeChild(tmp);
+      });
+    } else {
+      const tmp = document.createElement('textarea');
+      tmp.value = text;
+      document.body.appendChild(tmp);
+      tmp.select();
+      try {
+        document.execCommand('copy');
+        showMessage(successMsg);
+      } catch(e) {
+        showMessage('Tidak dapat menyalin, silakan salin manual.');
+      }
+      document.body.removeChild(tmp);
+    }
+  }
+
   let activeMethod = 'qris';
 
   function applyMethod(methodKey) {
     activeMethod = methodKey;
 
-    // tombol aktif
     methodButtons.forEach(btn => {
       btn.classList.toggle('active', btn.dataset.method === methodKey);
     });
 
     const cfg = METHOD_CONFIG[methodKey];
 
-    // label + nomor
     walletLabel.textContent = cfg.label;
     walletNumber.textContent = cfg.number;
 
-    // nominal final di tampilan besar
     const total = cfg.calcTotal(baseAmount);
     modalAmount.textContent = formatRupiah(total);
 
     walletNote.textContent = cfg.note;
 
-    // QR hanya muncul kalau pilih QRIS
     if (methodKey === 'qris') {
       modalQr.style.display = 'block';
       modalQr.src = qrUrl;
@@ -590,21 +622,19 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     }
   }
 
-  // Set default method (QRIS)
+  // default QRIS
   applyMethod('qris');
 
   copySuccess.style.display = 'none';  
   backdrop.style.display = 'flex';  
   backdrop.setAttribute('aria-hidden', 'false');  
 
-  // ==== EVENT: PILIH METODE ====
   methodButtons.forEach(btn => {
     btn.onclick = function () {
       applyMethod(this.dataset.method);
     };
   });
 
-  // ==== TUTUP MODAL ====
   document.getElementById('closeModalBtn').onclick = function() {  
     backdrop.style.display = 'none';  
     backdrop.setAttribute('aria-hidden', 'true');  
@@ -617,54 +647,19 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     }  
   };  
 
-  // ==== SALIN NOMOR (GOPAY / DANA / SEABANK / TEKS QRIS) ====
+  // SALIN NOMOR (tanpa popup alert, pakai teks hijau)
   copyNumberBtn.onclick = function () {
-    const textToCopy = walletNumber.textContent || '';
-    if (!textToCopy) return;
-
-    navigator.clipboard?.writeText(textToCopy).then(() => {
-      // Tidak menampilkan alamat URL apa pun di alert
-      alert('Nomor berhasil disalin.');
-    }).catch(() => {
-      const tmp = document.createElement('textarea');
-      tmp.value = textToCopy;
-      document.body.appendChild(tmp);
-      tmp.select();
-      try {
-        document.execCommand('copy');
-        alert('Nomor berhasil disalin.');
-      } catch (e) {
-        alert('Tidak dapat menyalin, silakan salin manual.');
-      }
-      document.body.removeChild(tmp);
-    });
+    copyTextToClipboard(walletNumber.textContent || '', 'Nomor berhasil disalin');
   };
 
-  // ==== SALIN JUMLAH (TOTAL SESUAI METODE) ====
+  // SALIN JUMLAH
   document.getElementById('copyAmountBtn').onclick = function() {  
-    const textToCopy = modalAmount.textContent || '';  
-    navigator.clipboard?.writeText(textToCopy).then(() => {  
-      copySuccess.style.display = 'block';  
-      setTimeout(()=> copySuccess.style.display = 'none', 2500);  
-    }).catch(()=> {  
-      const tmp = document.createElement('textarea');  
-      tmp.value = textToCopy;  
-      document.body.appendChild(tmp);  
-      tmp.select();  
-      try {  
-        document.execCommand('copy');  
-        copySuccess.style.display = 'block';  
-        setTimeout(()=> copySuccess.style.display = 'none', 2500);  
-      } catch(e){  
-        alert('Tidak dapat menyalin, silahkan salin secara manual.');  
-      }  
-      document.body.removeChild(tmp);  
-    });  
+    copyTextToClipboard(modalAmount.textContent || '', 'Jumlah berhasil disalin');
   };  
 
-  // ==== BUKA BOT (tetap sama) ====
+  // BUKA BOT
   document.getElementById('openBotBtn').onclick = function() {  
-    const botUsername = 'topupressbot'; // ganti sesuai bot kamu, tanpa @  
+    const botUsername = 'topupressbot';  
     const tgScheme = 'tg://resolve?domain=' + encodeURIComponent(botUsername);  
     const webLink  = 'https://t.me/' + encodeURIComponent(botUsername) + '?start';  
 
