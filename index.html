@@ -187,15 +187,17 @@ button:hover {
   display: flex;  
   justify-content: center;  
   gap: 6px;  
+  flex-wrap: wrap;  
 }  
 .method-btn {  
   flex: 1;  
   padding: 4px 6px;  
   font-size: 11px;  
   border-radius: 999px;  
-  border: 1px solid #d1d9e6;  
-  background: #f5f5f5;  
+  border: 1px solid #4a6fa1;  
+  background: #ffffff;  
   cursor: pointer;  
+  color: #4a6fa1;  
 }  
 .method-btn.active {  
   background: #4a6fa1;  
@@ -218,21 +220,24 @@ button:hover {
   justify-content: space-between;  
   gap: 6px;  
   margin-bottom: 4px;  
+  flex-wrap: nowrap;  
 }  
 .wallet-number {  
   font-family: monospace;  
-  font-size: 11px;  
+  font-size: 10px;  
   color: #333;  
-  flex: 1;  
+  flex: 1 1 auto;  
   word-break: break-all;  
 }  
 .copy-mini-btn {  
-  padding: 4px 6px;  
-  font-size: 10px;  
+  padding: 2px 6px;  
+  font-size: 9px;  
   border-radius: 6px;  
-  border: 1px solid #d1d9e6;  
-  background: #f5f5f5;  
+  border: 1px solid #4a6fa1;  
+  background: #ffffff;  
   cursor: pointer;  
+  flex: 0 0 auto;  
+  color: #4a6fa1;  
 }  
 .copy-mini-btn:hover {  
   background: #e6ebf5;  
@@ -353,30 +358,31 @@ button:hover {
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">  
     <h3 id="modalTitle">Pembayaran</h3>  
 
-    <!-- QR (muncul hanya untuk QRIS) -->  
+    <!-- QR (muncul hanya untuk QRIS & default aktif) -->  
     <img id="modalQr" class="qr" src="" alt="QR Pembayaran">  
 
     <!-- Nominal akhir sesuai metode -->  
     <div id="modalAmount" class="amount">Rp0</div>  
 
-    <!-- PILIH METODE PEMBAYARAN -->  
+    <!-- PILIH METODE PEMBAYARAN (QRIS default) -->  
     <div class="method-switch">
-      <button type="button" class="method-btn active" data-method="gopay">GoPay</button>
+      <button type="button" class="method-btn active" data-method="qris">QRIS</button>
+      <button type="button" class="method-btn" data-method="gopay">GoPay</button>
+      <button type="button" class="method-btn" data-method="seabank">SeaBank</button>
       <button type="button" class="method-btn" data-method="dana">DANA</button>
-      <button type="button" class="method-btn" data-method="qris">QRIS</button>
     </div>
 
     <!-- INFO NOMOR TUJUAN & CATATAN -->  
     <div class="wallet-section">
-      <div id="walletLabel" class="wallet-label">Transfer GoPay</div>
+      <div id="walletLabel" class="wallet-label">QRIS (scan QR di atas)</div>
 
       <div class="wallet-row">
-        <span id="walletNumber" class="wallet-number">083197962700</span>
-        <button id="copyNumberBtn" type="button" class="copy-mini-btn">Salin Nomor</button>
+        <span id="walletNumber" class="wallet-number">Gunakan QR di atas</span>
+        <button id="copyNumberBtn" type="button" class="copy-mini-btn">Salin</button>
       </div>
 
       <div id="walletNote" class="wallet-note">
-        Pembayaran GoPay tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.
+        QRIS hingga Rp499.000 tidak ada biaya tambahan. Di atas itu akan dikenakan biaya 0,3% dari nominal.
       </div>
     </div>
 
@@ -507,8 +513,9 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
   const methodButtons = document.querySelectorAll('.method-btn');
 
   // ========= KONFIGURASI NOMOR & BIAYA =========
-  const GOPAY_NUMBER = '083197962700';
-  const DANA_NUMBER  = '083197962700';
+  const GOPAY_NUMBER   = '083197962700';
+  const DANA_NUMBER    = '083197962700';
+  const SEABANK_NUMBER = '901673348752';
 
   // Ambil angka murni dari harga di form
   const baseAmount = (function () {
@@ -522,18 +529,6 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
 
   // Hitung total sesuai metode
   const METHOD_CONFIG = {
-    gopay: {
-      label: 'Transfer GoPay',
-      number: GOPAY_NUMBER,
-      calcTotal: (base) => base,
-      note: 'Pembayaran GoPay tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.'
-    },
-    dana: {
-      label: 'Transfer DANA',
-      number: DANA_NUMBER,
-      calcTotal: (base) => base + 100,
-      note: 'Pembayaran DANA dikenakan biaya admin Rp100. Total sudah termasuk biaya admin.'
-    },
     qris: {
       label: 'QRIS (scan QR di atas)',
       number: 'Gunakan QR di atas',
@@ -543,10 +538,28 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
         return base + fee;
       },
       note: 'QRIS hingga Rp499.000 tidak ada biaya tambahan. Di atas itu akan dikenakan biaya 0,3% dari nominal.'
+    },
+    gopay: {
+      label: 'Transfer GoPay',
+      number: GOPAY_NUMBER,
+      calcTotal: (base) => base,
+      note: 'Pembayaran GoPay tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.'
+    },
+    seabank: {
+      label: 'Transfer SeaBank',
+      number: SEABANK_NUMBER,
+      calcTotal: (base) => base,
+      note: 'Pembayaran SeaBank tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.'
+    },
+    dana: {
+      label: 'Transfer DANA',
+      number: DANA_NUMBER,
+      calcTotal: (base) => base + 100,
+      note: 'Pembayaran DANA dikenakan biaya admin Rp100. Total sudah termasuk biaya admin.'
     }
   };
 
-  let activeMethod = 'gopay';
+  let activeMethod = 'qris';
 
   function applyMethod(methodKey) {
     activeMethod = methodKey;
@@ -577,8 +590,8 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     }
   }
 
-  // Set default method (GoPay)
-  applyMethod('gopay');
+  // Set default method (QRIS)
+  applyMethod('qris');
 
   copySuccess.style.display = 'none';  
   backdrop.style.display = 'flex';  
@@ -604,13 +617,14 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     }  
   };  
 
-  // ==== SALIN NOMOR (GOPAY / DANA / TEKS QRIS) ====
+  // ==== SALIN NOMOR (GOPAY / DANA / SEABANK / TEKS QRIS) ====
   copyNumberBtn.onclick = function () {
     const textToCopy = walletNumber.textContent || '';
     if (!textToCopy) return;
 
     navigator.clipboard?.writeText(textToCopy).then(() => {
-      alert('Nomor berhasil disalin: ' + textToCopy);
+      // Tidak menampilkan alamat URL apa pun di alert
+      alert('Nomor berhasil disalin.');
     }).catch(() => {
       const tmp = document.createElement('textarea');
       tmp.value = textToCopy;
@@ -618,9 +632,9 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
       tmp.select();
       try {
         document.execCommand('copy');
-        alert('Nomor berhasil disalin: ' + textToCopy);
+        alert('Nomor berhasil disalin.');
       } catch (e) {
-        alert('Tidak dapat menyalin, silakan salin manual: ' + textToCopy);
+        alert('Tidak dapat menyalin, silakan salin manual.');
       }
       document.body.removeChild(tmp);
     });
@@ -642,7 +656,7 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
         copySuccess.style.display = 'block';  
         setTimeout(()=> copySuccess.style.display = 'none', 2500);  
       } catch(e){  
-        alert('Tidak dapat menyalin, silahkan salin secara manual: ' + textToCopy);  
+        alert('Tidak dapat menyalin, silahkan salin secara manual.');  
       }  
       document.body.removeChild(tmp);  
     });  
