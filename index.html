@@ -586,7 +586,7 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
   const methodButtons = document.querySelectorAll('.method-btn');
 
   const GOPAY_NUMBER   = '083197962700';
-  const DANA_NUMBER    = '083197962700';
+  const BRI_NUMBER    = '3295 0102 4903 507';
   const SEABANK_NUMBER = '901673348752';
 
   const baseAmount = (function () {
@@ -621,18 +621,18 @@ function showPaymentPopup(qrUrl, hargaFormatted) {
     },
     seabank: {
       label: 'Transfer SeaBank',
-      numberTitle: 'No rekening SeaBank',
+      numberTitle: 'Nomor rekening SeaBank',
       number: SEABANK_NUMBER,
       calcTotal: (base) => base,
       note: 'SeaBank tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.',
       showNumber: true
     },
-    dana: {
-      label: 'Transfer DANA',
-      numberTitle: 'No HP DANA',
-      number: DANA_NUMBER,
-      calcTotal: (base) => base + 100,
-      note: 'Pembayaran DANA dikenakan biaya admin Rp100. Total sudah termasuk biaya admin.',
+    bri: {
+      label: 'Transfer BRI',
+      numberTitle: 'Nomor rekening BRI',
+      number: BRI_NUMBER,
+      calcTotal: (base) => base,
+      note: 'SeaBank tidak ada biaya tambahan. Bayar sesuai nominal yang tertera.',
       showNumber: true
     }
   };
